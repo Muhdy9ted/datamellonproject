@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { CssBaseline, Grid } from '@material-ui/core';
+
+import Dashboard from './views/dashboard';
+import SideMenu from './components/SideMenu';
+import Header from './components/Header'
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: '#f4f5fd'
+    }
+  },
+
+  overrides:{ //overides css rules of specified component
+    MuiAppBar: {
+      root: {
+        transform: 'translateZ(0)'
+      }
+    }
+  },
+});
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Grid container spacing={0}>
+          <Grid item md={2} xl={2}>
+            <SideMenu />
+          </Grid>
+          <Grid item xs={12} md={10} xl={10}>
+            <Header />
+            <Switch>
+              <Route exact path="/" component={Dashboard} />
+              <Redirect from="*" to="/" />
+            </Switch>
+          </Grid>
+        </Grid>
+        <CssBaseline /> {/* implements basic common css rules like box-sizing, body padding and margin = 0 etc*/}
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
